@@ -1,0 +1,169 @@
+void heapify(int arr[], int n, int i)
+{
+    int largest = i;  // Initialize largest as root
+    int l = 2*i + 1;  // left = 2*i + 1
+    int r = 2*i + 2;  // right = 2*i + 2
+ 
+    // If left child is larger than root
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+ 
+    // If right child is larger than largest so far
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+ 
+    // If largest is not root
+    if (largest != i)
+    {
+        swap(arr[i], arr[largest]);
+ 
+        // Recursively heapify the affected sub-tree
+        heapify(arr, n, largest);
+    }
+}
+ 
+void heapSort(int arr[], int n)
+{
+    // Build heap (rearrange array)
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+ 
+    // One by one extract an element from heap
+    for (int i=n-1; i>=0; i--)
+    {
+        // Move current root to end
+        swap(arr[0], arr[i]);
+ 
+        // call max heapify on the reduced heap
+        heapify(arr, i, 0);
+    }
+}
+
+void printArray(int arr[], int n)
+{
+    for (int i=0; i<n; ++i)
+        cout << arr[i] << " ";
+    cout << "\n";
+}
+ 
+int main()
+{
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr)/sizeof(arr[0]);
+ 
+    heapSort(arr, n);
+ 
+    cout << "Sorted array is \n";
+    printArray(arr, n);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include<stdio.h>
+#include<conio.h>
+int a[20][20],q[20],visited[20],n,i,j,f=0,r=-1;
+void bfs(int v) {
+	for (i=1;i<=n;i++)
+	  if(a[v][i] && !visited[i])
+	   q[++r]=i;
+	if(f<=r) {
+		visited[q[f]]=1;
+		bfs(q[f++]);
+	}
+}
+void main() {
+	int v;
+	clrscr();
+	printf("\n Enter the number of vertices:");
+	scanf("%d",&n);
+	for (i=1;i<=n;i++) {
+		q[i]=0;
+		visited[i]=0;
+	}
+	printf("\n Enter graph data in matrix form:\n");
+	for (i=1;i<=n;i++)
+	  for (j=1;j<=n;j++)
+	   scanf("%d",&a[i][j]);
+	printf("\n Enter the starting vertex:");
+	scanf("%d",&v);
+	bfs(v);
+	printf("\n The node which are reachable are:\n");
+	for (i=1;i<=n;i++)
+	  if(visited[i])
+	   printf("%d\t",i); else
+	   printf("\n Bfs is not possible");
+	getch();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include<stdio.h>
+#include<conio.h>
+int a[20][20],reach[20],n;
+void dfs(int v) {
+	int i;
+	reach[v]=1;
+	for (i=1;i<=n;i++)
+	  if(a[v][i] && !reach[i]) {
+		printf("\n %d->%d",v,i);
+		dfs(i);
+	}
+}
+void main() {
+	int i,j,count=0;
+	clrscr();
+	printf("\n Enter number of vertices:");
+	scanf("%d",&n);
+	for (i=1;i<=n;i++) {
+		reach[i]=0;
+		for (j=1;j<=n;j++)
+		   a[i][j]=0;
+	}
+	printf("\n Enter the adjacency matrix:\n");
+	for (i=1;i<=n;i++)
+	  for (j=1;j<=n;j++)
+	   scanf("%d",&a[i][j]);
+	dfs(1);
+	printf("\n");
+	for (i=1;i<=n;i++) {
+		if(reach[i])
+		   count++;
+	}
+	if(count==n)
+	  printf("\n Graph is connected"); else
+	  printf("\n Graph is not connected");
+	getch();
