@@ -1,0 +1,101 @@
+Containers:
+
+Arrays:
+static C style arrays
+sequence of elements with constant size
+can neither add nor remove elements to change the size
+only a replacement of element values is possible
+Arrays provide random access : access every element directly in constant time
+
+the default constructor does not create an empty container
+only container whose elements are default initialized when nothing is passed to initialize the elements.
+for fundamental types, the initial value might be undefined rather than zero
+std::array<int,4> x;                          // elements of x have undefined value
+
+can provide an empty initializer list
+elements of fundamental types are zero initialized
+std::array<int,4> x = {};                    //all elements of x have value 0 (int())
+
+The elements in the initializer list must have the same type, or there must be a type conversion to the
+element type of the array defined.
+
+If an initializer list does not have enough elements, it is guaranteed that for fundamental data
+types the elements are zero initialized
+std::array<int,10> c2 = { 42 };            // one element with value 42 followed by 9 elements with value 0
+
+
+If the number of elements in the initializer lists is higher than the size of the array, the expression is
+ill-formed:
+std::array<int,5> c3 = { 1, 2, 3, 4, 5, 6 };                       // ERROR: too many values
+
+possible to specify a size of 0
+begin() and end(), cbegin() and cend(), and the corresponding reverse iterators still 
+yield the same unique value
+return value of front() and back() is undefined.
+
+
+initialize:
+array<Elem,N> c                        Default constructor; creates an array with defaultinitialized elements
+array<Elem,N> c(c2)                Copy constructor; creates a copy of another array of the same type (all elements are copied)
+array<Elem,N> c = c2               Copy constructor; creates a copy of another array of the same type (all elements are copied)
+array<Elem,N> c = initlist      Creates an array initialized with the elements of the initializer list
+
+operators:
+c.empty()                  Returns whether the container is empty (equivalent to size()==0 but might be faster)
+c.size()                       Returns the current number of elements
+c.max_size()            Returns the maximum number of elements possible
+c1 == c2                      Returns whether c1 is equal to c2 (calls == for the elements)
+c1 != c2                       Returns whether c1 is not equal to c2 (equivalent to !(c1==c2))
+c1 < c2                         Returns whether c1 is less than c2
+c1 > c2                         Returns whether c1 is greater than c2 (equivalent to c2<c1)
+c1 <= c2                       Returns whether c1 is less than or equal to c2 (equivalent to !(c2<c1))
+c1 >= c2                       Returns whether c1 is greater than or equal to c2 (equivalent to !(c1<c2))
+
+
+
+assignment:
+c = c2                                   Assigns all elements of c2 to c
+c.fill(val)                            Assigns val to each element in array c
+c1.swap(c2)                      Swaps the data of c1 and c2
+swap(c1,c2)                      Swaps the data of c1 and c2
+
+
+access:
+c[idx]                       Returns the element with index idx (no range checking)
+c.at(idx)                  Returns the element with index idx (throws range-error exception if idx is out of range)
+c.front()                  Returns the first element (no check whether a first element exists)
+c.back()                   Returns the last element (no check whether a last element exists)
+
+
+
+
+Vectors:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
