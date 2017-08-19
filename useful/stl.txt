@@ -1,6 +1,7 @@
 Containers:
 
 Arrays:
+--------------------------------------------------------------------------------------------------------
 static C style arrays
 sequence of elements with constant size
 can neither add nor remove elements to change the size
@@ -35,12 +36,14 @@ return value of front() and back() is undefined.
 
 
 initialize:
+------------
 array<Elem,N> c                        Default constructor; creates an array with defaultinitialized elements
 array<Elem,N> c(c2)                Copy constructor; creates a copy of another array of the same type (all elements are copied)
 array<Elem,N> c = c2               Copy constructor; creates a copy of another array of the same type (all elements are copied)
 array<Elem,N> c = initlist      Creates an array initialized with the elements of the initializer list
 
 operators:
+-------------
 c.empty()                  Returns whether the container is empty (equivalent to size()==0 but might be faster)
 c.size()                       Returns the current number of elements
 c.max_size()            Returns the maximum number of elements possible
@@ -54,6 +57,7 @@ c1 >= c2                       Returns whether c1 is greater than or equal to c2
 
 
 assignment:
+---------------
 c = c2                                   Assigns all elements of c2 to c
 c.fill(val)                            Assigns val to each element in array c
 c1.swap(c2)                      Swaps the data of c1 and c2
@@ -61,6 +65,7 @@ swap(c1,c2)                      Swaps the data of c1 and c2
 
 
 access:
+----------
 c[idx]                       Returns the element with index idx (no range checking)
 c.at(idx)                  Returns the element with index idx (throws range-error exception if idx is out of range)
 c.front()                  Returns the first element (no check whether a first element exists)
@@ -70,6 +75,600 @@ c.back()                   Returns the last element (no check whether a last ele
 
 
 Vectors:
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+assignment:
+------------------
+c = c2                                   Assigns all elements of c2 to c
+c.fill(val)                            Assigns val to each element in array c
+c1.swap(c2)                      Swaps the data of c1 and c2
+swap(c1,c2)                      Swaps the data of c1 and c2
+
+
+access:
+----------
+c[idx]                       Returns the element with index idx (no range checking)
+c.at(idx)                  Returns the element with index idx (throws range-error exception if idx is out of range)
+c.front()                  Returns the first element (no check whether a first element exists)
+
+
+
+
+
+
+
+
+String:
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+For strings that use wider character sets, such as Unicode or some Asian character sets, three 
+other types are predefined (u16string and u32string are provided since C++11):
+
+types:
+--------
+namespace std {
+typedef basic_string<wchar_t> wstring;
+typedef basic_string<char16_t> u16string;
+typedef basic_string<char32_t> u32string;
+}
+
+
+
+
+Operations on Strings:
+-------------------------------
+constructors                                                                       Create or copy a string
+destructor                                                                           Destroys a string
+=, assign()                                                                            Assign a new value
+swap()                                                                                  Swaps values between two strings
++=, append(), push_back()                                          Append characters
+insert()                                                                                Inserts characters
+erase(), pop_back()                                                       Deletes characters (pop_back() since C++11)
+clear()                                                                                 Removes all characters (empties a string)
+resize()                                                                               Changes the number of characters (deletes or appends characters at the end)
+replace()                                                                            Replaces characters
++                                                                                            Concatenates strings
+==, !=, <, <=, >, >=, compare()                                    Compare strings
+empty()                                                                             Returns whether the string is empty
+size(), length()                                                               Return the number of characters
+max_size()                                                                       Returns the maximum possible number of characters
+capacity()                                                                         Returns the number of characters that can be held without reallocation
+reserve()                                                                          Reserves memory for a certain number of characters
+shrink_to_fit()                                                                Shrinks the memory for the current number of characters (since C++11)
+[ ], at()                                                                               Access a character
+front(), back()                                                                Access the first or last character (since C++11)
+>>, getline()                                                                    Read the value from a stream
+<<                                                                                        Writes the value to a stream
+stoi(), stol(), stoll()                                                      Convert string to signed integral value (since C++11)
+stoul(), stoull()                                                              Convert string to unsigned integral value (since C++11)
+stof(), stod(), stold()                                                   Convert string to floating-point value (since C++11)
+to_string(), to_wstring()                                            Convert integral/floating-point value to string (since C++11)
+copy()                                                                                Copies or writes the contents to a character array
+data(), c_str()                                                                 Returns the value as C-string or character array
+substr()                                                                             Returns a certain substring
+find functions                                                                 Search for a certain substring or character
+begin(), end()                                                                Provide normal iterator support
+cbegin(), cend()                                                            Provide constant iterator support (since C++11)
+rbegin(), rend()                                                             Provide reverse iterator support
+crbegin(), crend()                                                         Provide constant reverse iterator support (since C++11)
+get_allocator()                                                               Returns the allocator
+
+
+
+atoi(s.c_str())             // convert string into integer
+
+
+
+
+std::string s(’x’);             // ERROR
+std::string s(1,’x’);        // OK, creates a string that has one character ’x’
+std::string s({’x’});        // OK, ditto (since C++11)
+
+
+initialize:
+-----------
+string s                                             Creates the empty string s
+string s(str) 		Copy constructor; creates a string as a copy of the existing string str
+string s(rvStr)		 Move constructor; creates a string and moves the contents of rvStr to it (rvStr has a valid state with undefined value afterward)
+string s(str,stridx) 		Creates a string s that is initialized by the characters of
+string str 			starting with index stridx
+string s(str,stridx,strlen) 	Creates a string s that is initialized by, at most, strlen characters of string str starting with index stridx
+string s(cstr) 		Creates a string s that is initialized by the C-string cstr
+string s(chars,charslen) 	Creates a string s that is initialized by charslen characters of the character array chars
+string s(num,c)		 Creates a string that has num occurrences of character c
+string s(beg,end) 		Creates a string that is initialized by all characters of the range [beg,end)
+string s(initlist) 		Creates a string that is initialized by all characters in initlist (since C++11)
+
+
+erase:
+-------
+A number of characters when given an offset position and count
+string strSample (“Hello String! Wake up to a beautiful day!”);
+strSample.erase (13, 28);                                      // Hello String!
+
+A character when supplied with an iterator pointing to it
+strSample.erase (iCharS);                                   // iterator points to a specific character
+
+A number of characters given a range supplied by two iterators that bind the same
+strSample.erase (strSample.begin (), strSample.end ());                     // erase from begin to end
+
+reverse:
+----------
+string strSample (“Hello String! We will reverse you!”);
+reverse (strSample.begin (), strSample.end ());
+
+transform:
+--------------
+String case conversion can be effected using the algorithm std::transform, which
+applies a user-specified function to every element of a collection.
+
+
+size() length():
+------------------
+size_type string::size () const
+size_type string::length () const
+• Both functions return the current number of characters.
+• They are equivalent.
+• To check whether the string is empty, you should use empty() because it might be faster
+
+size() and length() are equivalent functions that return the current number of characters of the string
+
+
+empty():
+-----------
+bool string::empty () const
+• Returns whether the string is empty (contains no characters).
+• It is equivalent to string::size()==0, but it might be faster.
+
+The empty() function is a shortcut for checking whether the number of characters is zero.
+Thus, it checks whether the string is empty. Because it might be faster, you should use empty() instead of length() or size().
+
+max_size():
+---------------
+
+size_type string::max_size () const
+• Returns the maximum number of characters a string could contain.
+• Whenever an operation results in a string that has a length greater than max_size(), the class
+throws length_error.
+
+capacity():
+---------------
+
+size_type string::capacity () const
+• Returns the number of characters the string could contain without reallocation.
+
+capacity() returns the number of characters a string could contain without having to reallocate its internal memory.
+
+
+
+reserve():
+------------
+
+void string::reserve ()
+void string::reserve (size_type num)
+• The first form is a nonbinding shrink-to-fit request.
+• The second form reserves internal memory for at least num characters.
+• If num is less than the current capacity, the call is taken as a nonbinding request to shrink the capacity.
+• If num is less than the current number of characters, the call is taken as a nonbinding request to shrink the capacity to fit the current number of characters (equivalent to the first form).
+• The capacity is never reduced below the current number of characters.
+• This operation might invalidate references, pointers, and iterators to characters. However, it is guaranteed that no reallocation takes place during insertions that happen after a call to reserve()
+until the time when an insertion would make the size greater than num. Thus, reserve() can increase speed and help to keep references, pointers, and iterators valid
+
+s.reserve(); 			// ‘‘would like to shrink capacity to fit the current size’’
+
+
+shrink_to_fit():
+-------------------
+
+void string::shrink_to_fit ()
+• Reduces the internal memory to fit the current numbers of characters.
+• It has the same effect as reserve(0).
+• The call is taken as a nonbinding request to allow latitude for implementation-specific optimizations.
+• This operation might invalidate references, pointers, and iterators to characters.
+• Available since C++11.
+
+s.shrink_to_fit();			 // ‘‘would like to shrink capacity to fit the current size’’ (C++11)
+
+
+
+element access:
+--------------------
+
+char& string::operator [ ] (size_type idx)
+const char& string::operator [ ] (size_type idx) const
+• Both forms return the character with the index idx (the first character has index 0).
+• length() or size() is a valid index, and the operator returns the value generated by the default constructor of the character type (for string: ’\0’). 
+   Before C++11, length() or size() was an invalid index value for nonconstant strings.
+• Passing an invalid index results in undefined behavior.
+
+
+char& string::at (size_type idx)
+const char& string::at (size_type idx) const
+• Both forms return the character that has the index idx (the first character has index 0).
+• For all strings, an index with length() as value is invalid.
+• Passing an invalid index—less than 0 or greater than or equal to length() or size()—throws an out_of_range exception.
+• By ensuring that the index is valid, the caller can use operator [ ], which is faster.
+
+char& string::front ()
+const char& string::front () const
+• Both forms return the first character.
+• Calling front() for an empty string returns the value generated by the default constructor of the character type (for string: ’\0’).
+
+char& string::back ()
+const char& string::back () const
+• Both forms return the last character.
+• Calling back() for an empty string results in undefined behavior
+
+Since C++11, front() and back() are provided to also access the first or last character.
+
+If called with an invalid index, at() throws an out_of_range exception. If operator [ ] is called with an invalid index, the behavior is undefined.
+
+front() is equivalent to [0], which means that for empty strings the character representing the end of the string (’\0’ for strings) is returned.
+For at(), the current number of characters is not a valid index.
+When called for an empty string, back() results in undefined behavior.
+
+
+s[s.length()]                      // yields ’\0’ (undefined behavior before C++11)
+s.at(s.length())                 // throws out_of_range
+
+std::string s("abcde");                           // s contains: ’a’ ’b’ ’c’ ’d’ ’e’
+char& r = s[2];                                            // reference to third character
+char* p = &s[3];                                          // pointer to fourth character
+r = ’X’;                                                            // OK, s contains: ’a’ ’b’ ’X’ ’d’ ’e’
+*p = ’Y’;                                                           // OK, s contains: ’a’ ’b’ ’X’ ’Y’ ’e’
+s = "new long value";                                // reallocation invalidates r and p
+r = ’X’;                                                            // ERROR: undefined behavior
+*p = ’Y’;                                                         // ERROR: undefined behavior
+To avoid runtime errors, you would have had to reserve() enough capacity before r and p were initialized.
+
+References, pointers, and iterators that refer to characters of a string may be invalidated by the following operations:
+• If the value is swapped with swap()
+• If a new value is read by operator>>() or getline()
+• If any nonconstant member function is called, except operator [ ], at(), begin(), end(), rbegin(), and rend()
+
+
+const char* string::c_str () const
+const char* string::data () const
+• Returns the contents of the string as a character array, including a trailing end-of-string character ’\0’. Thus, this is a valid C-string for strings.
+• The return value is owned by the string. Thus, the caller must neither modify nor free or delete the return value.
+• The return value is valid only as long as the string exists and as long as only constant functions are called for it.
+• Before C++11, the return value of data() was guaranteed to contain all characters of the string without any trailing ’\0’ character. Thus, the return value of data() was not a valid C-string.
+
+
+size_type string::copy (char* buf, size_type buf_size) const
+size_type string::copy (char* buf, size_type buf_size, size_type idx) const
+• Both forms copy at most buf_size characters of the string (beginning with index idx, if passed) into the character array buf.
+• They return the number of characters copied.
+• No null character is appended. Thus, the contents of buf might not be a valid C-string after the call.
+• The caller must ensure that buf has enough memory; otherwise, the call results in undefined behavior.
+• Throws out_of_range if idx > size().
+
+compare:
+---------------
+
+The compare() member functions can process more than one argument for each string, so you can specify a substring by its index and its length.
+This return value has the following meaning: 0 means equal, a value less than 0 means less than,and a value greater than 0 means greater than.
+
+std::string s("abcd");
+s.compare("abcd")                                                    // returns 0
+s.compare("dcba")                                                  // returns a value < 0 (s is less)
+s.compare("ab")                                                 // returns a value > 0 (s is greater)
+s.compare(s)                                                           // returns 0 (s is equal to s)
+s.compare(0,2,s,2,2)                                        // returns a value < 0 ("ab" is less than "cd")  (need to specify position and length when using a variable) (first two args. are of the string with which the function is being called)
+s.compare(1,2,"bcx",2)                                  // returns 0 ("bc" is equal to "bc") (just need length when explicitly given the string default position is taken as  0)
+
+empty string:
+-------------------
+s = "";                    // assign the empty string
+s.clear();              // clear contents
+s.erase();             // erase all characters
+
+
+modifiers:
+--------------
+
+To modify a string, you can use operator = to assign a new value
+
+s.assign(aString);                                                                        // assign "othello" (equivalent to operator =)
+s.assign(aString,1,3); 			// assign "the"
+s.assign(aString,2,std::string::npos);		 // assign "hello"
+s.assign("two\nlines");			 // assign a C-string (equivalent to operator =)
+s.assign("nico",5); 				// assign the character array: ’n’ ’i’ ’c’ ’o’ ’\0’
+s.assign(5,’x’);				 // assign five characters: ’x’ ’x’ ’x’ ’x’ ’x’
+
+insert,remove,replace character:
+--------------------------
+
+const std::string aString("othello");
+std::string s;
+s += aString; 				// append "othello"
+s += "two\nlines";				 // append C-string
+s += ’\n’; 					// append single character
+s += { ’o’, ’k’ };				 // append an initializer list of characters (since C++11)
+s.append(aString);				 // append "othello" (equivalent to operator +=)
+s.append(aString,1,3); 			// append "the"
+s.append(aString,2,std::string::npos); 		// append "hello"
+s.append("two\nlines"); 			// append C-string (equivalent to operator +=)
+s.append("nico",5);				 // append character array: ’n’ ’i’ ’c’ ’o’ ’\0’
+s.append(5,’x’);				 // append five characters: ’x’ ’x’ ’x’ ’x’ ’x’
+s.push_back(’\n’); 				// append single character (equivalent to operator +=)
+
+std::string s = "i18n"; 			// s: i18n
+s.replace(1,2,"nternationalizatio");		 // s: internationalization
+s.erase(13); 				// s: international
+s.erase(7,5); 				// s: internal
+s.pop_back(); 				// s: interna (since C++11)
+s.replace(0,2,"ex"); 				// s: externa
+
+insert():
+----------
+These functions require the index of the character, after which the new characters are inserted:
+
+const std::string aString("age");
+std::string s("p");
+s.insert(1,aString); 		// s: page
+s.insert(1,"ersifl"); 		// s: persiflage
+
+no insert() member function is provided to pass the index and a single character. Thus, you must pass a string or an additional number:
+s.insert(0,’ ’); 		// ERROR
+s.insert(0," "); 		// OK
+
+s.insert(0,1,’ ’); // ERROR: ambiguous
+
+However, this results in a nasty ambiguity because insert() is overloaded for the following signatures:
+
+insert (size_type idx, size_type num, charT c);		 // position is index
+insert (iterator pos, size_type num, charT c);		 // position is iterator
+For type string, size_type is usually defined as unsigned, and iterator is often defined as char*. 
+In this case, the first argument 0 has two equivalent conversions. So, to get the correct behavior, you have to write:
+s.insert((std::string::size_type)0,1,’ ’); 			// OK
+
+substring:
+------------
+std::string s("interchangeability");
+s.substr() 						// returns a copy of s
+s.substr(11) 					// returns string("ability")(position)
+s.substr(5,6) 					// returns string("change")(position,length)
+s.substr(s.find(’c’))					 // returns string("changeability")
+
+
+can use operator + to concatenate two strings or C-strings:
+
+std::string s1("enter");
+std::string s2("nation");
+std::string i18n;
+i18n = ’i’ + s1.substr(1) + s2 + "aliz" + s2.substr(1);
+std::cout << "i18n means: " + i18n << std::endl;
+have the following output:  "i18n means: internationalization"
+
+getline():
+--------------
+
+This function reads all characters, including leading whitespaces, until the line delimiter or end-of-file is reached.
+
+By default, the line delimiter is the newline character, but you can pass your own “line” delimiter as an optional argument.
+This way, you can read token by token, separated by any arbitrary character:
+
+std::string s;
+while (getline(std::cin,s)) { // for each line read from cin
+...
+}
+while (getline(std::cin,s,’:’)) { // for each token separated by ’:’
+...
+}
+
+
+searching():
+------------------
+
+find() 				Finds the first occurrence of value
+rfind() 				Finds the last occurrence of value (reverse find)
+find_first_of() 			Finds the first character that is part of value
+find_last_of() 			Finds the last character that is part of value
+find_first_not_of() 			Finds the first character that is not part of value
+find_last_not_of() 			Finds the last character that is not part of value
+
+All search functions return the index of the first character of the character sequence that matches the search. If the search fails, they return npos.
+• The first argument is always the value that is searched for.
+• The second optional value indicates an index at which to start the search in the string.
+• The optional third argument is the number of characters of the value to search.
+
+
+std::string s("Hi Bill, I’m ill, so please pay the bill");
+s.find("il") 			// returns 4 (first substring "il")
+s.find("il",10)			 // returns 13 (first substring "il" starting from s[10])
+s.rfind("il") 			// returns 37 (last substring "il")
+s.find_first_of("il")			 // returns 1 (first char ’i’ or ’l’)
+s.find_last_of("il") 			// returns 39 (last char ’i’ or ’l’)
+s.find_first_not_of("il") 		// returns 0 (first char neither ’i’ nor ’l’)
+s.find_last_not_of("il") 		// returns 36 (last char neither ’i’ nor ’l’)
+s.find("hi") 			// returns npos
+
+When you want to check the return value, always use string::size_type, not int or unsigned for the type of the return value.
+
+string::npos
+-----------------
+std::string s;
+std::string::size_type idx; // be careful: don’t use any other type!
+...
+idx = s.find("substring");
+if (idx == std::string::npos) {
+...
+}
+
+(futher reading required)
+
+
+Numeric conversion:
+-----------------------------
+
+that these conversions are available only for types string and wstring, not u16string and u32string.
+
+stoi(str,idxRet=nullptr, base=10) 			Converts str to an int
+stol(str,idxRet=nullptr, base=10) 			Converts str to a long
+stoul(str,idxRet=nullptr, base=10) 			Converts str to an unsigned long
+stoll(str,idxRet=nullptr, base=10) 			Converts str to a long long
+stoull(str,idxRet=nullptr, base=10) 			Converts str to an unsigned long long
+stof(str,idxRet=nullptr) 				Converts str to a float
+stod(str,idxRet=nullptr) 				Converts str to a double
+stold(str,idxRet=nullptr) 				Converts str to a long double
+to_string(val) 					Converts val to a string
+to_wstring(val) 					Converts val to a wstring
+
+
+For all function that convert strings to a numeric value, the following applies:
+• They skip leading whitespaces.
+• They allow you to return the index of the first character after the last processed character.
+• They might throw std::invalid_argument if no conversion is possible and std::out_of_range if the converted value is outside the range of representable values for the return type.
+• For integral values, you can optionally pass the number base to use.
+
+For all functions that convert a numeric value to a string or wstring, val may be any of the following types: int, unsigned int, long, unsigned long, long long, unsigned long long, float, double, or long double.
+
+
+
+
+
+ALGORITHM:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. The _if suffix is used when you can call two forms of an algorithm that have the same number of parameters either by passing a value or by passing a function or function object. In this case,
+the version without the suffix is used for values, and the version with the _if suffix is used for functions and function objects. For example, find() searches for an element that has a certain
+value, whereas find_if() searches for an element that meets the criterion passed as a function, a function object, or a lambda.
+
+2. The _copy suffix is used as an indication that elements are not only manipulated but also copied into a destination range. For example, reverse() reverses the order of elements inside a range,
+whereas reverse_copy() copies the elements into another range in reverse order.
+
+
+Nonmodifying algos:
+--------------------------
+Nonmodifying algorithms change neither the order nor the value of the elements they process. These algorithms operate with input and forward iterators; therefore, you can call them for all standard containers.
+
+
+for_each() 			Performs an operation for each element
+count()				 Returns the number of elements
+count_if()				 Returns the number of elements that match a criterion
+min_element() 			Returns the element with the smallest value 
+max_element() 			Returns the element with the largest value
+minmax_element() 			Returns the elements with the smallest and largest value (since C++11)
+find() 				Searches for the first element with the passed value
+find_if()				 Searches for the first element that matches a criterion
+find_if_not() 			Searches for the first element that matches a criterion not (since C++11)
+search_n()			 Searches for the first n consecutive elements with certain properties
+search() 				Searches for the first occurrence of a subrange
+find_end() 			Searches for the last occurrence of a subrange
+find_first_of()			 Searches the first of several possible elements
+adjacent_find() 			Searches for two adjacent elements that are equal (by some criterion)
+equal() 				Returns whether two ranges are equal
+is_permutation() 			Returns whether two unordered ranges contain equal elements (since C++11)
+mismatch() 			Returns the first elements of two sequences that differ 
+lexicographical_compare() 		Returns whether a range is lexicographically less than another range 
+is_sorted() 			Returns whether the elements in a range are sorted (since C++11)
+is_sorted_until() 			Returns the first unsorted element in a range (since C++11)
+is_partitioned() 			Returns whether the elements in a range are partitioned in two groups according to a criterion (since C++11)
+partition_point() 			Returns the partitioning element for a range partitioned into elements fulfilling and elements not fulfilling a predicate (since C++11)
+is_heap() 				Returns whether the elements in a range are sorted as a heap (since C++11)
+is_heap_until() 			Returns the first element in a range not sorted as a heap (since C++11)
+all_of() 				Returns whether all elements match a criterion (since C++11) 
+any_of() 				Returns whether at least one element matches a criterion(since C++11)
+none_of() 			Returns whether none of the elements matches a criterion(since C++11)
+
+Search for 				String Function 		STL Algorithm
+First occurrence of one element 		find() 			find()
+Last occurrence of one element 		rfind() 			find() with reverse iterators
+First occurrence of a subrange 			find() 			search()
+Last occurrence of a subrange 			rfind() 			find_end()
+First occurrence of several elements 		find_first_of() 		find_first_of()
+Last occurrence of several elements 		find_last_of() 		find_first_of() with reverse iterators
+First occurrence of n consecutive					search_n()
+elements
+
+
+Modifying algos:
+---------------------
+Modifying algorithms change the value of elements. Such algorithms might modify the elements of a range directly or modify them while they are being copied into another range. If elements are
+copied into a destination range, the source range is not changed.
+
+
+for_each() 				Performs an operation for each element
+copy() 					Copies a range starting with the first element
+copy_if() 					Copies elements that match a criterion (since C++11)
+copy_n() 					Copies n elements (since C++11)
+copy_backward() 				Copies a range starting with the last element
+move() 					Moves elements of a range starting with the first element (since C++11)
+move_backward() 				Moves elements of a range starting with the last element (since C++11)
+transform() 				Modifies (and copies) elements; combines elements of two ranges
+merge() 					Merges two ranges
+swap_ranges() 				Swaps elements of two ranges
+fill() 					Replaces each element with a given value
+fill_n() 					Replaces n elements with a given value
+generate() 				Replaces each element with the result of an operation
+generate_n() 				Replaces n elements with the result of an operation
+iota() 					Replaces each element with a sequence of incremented values (since C++11)
+replace() 					Replaces elements that have a special value with another value
+replace_if() 				Replaces elements that match a criterion with another value
+replace_copy() 				Replaces elements that have a special value while copying the whole range
+replace_copy_if() 				Replaces elements that match a criterion while copying the whole range
+
+
+
+Using transform() is a bit slower because it returns and assigns the result instead of modifying the element directly. However, it is more flexible because it can also be used to modify elements while
+they are being copied into a different destination sequence.
+
+Strictly speaking, merge() does not necessarily have to be part of the list of modifying algorithms,because it requires that its input ranges be sorted. So, it should be part of the algorithms for sorted ranges. 
+In practice, however, merge() also merges the elements of unsorted ranges. Of course, then the result is unsorted. Nevertheless, to be safe, you should call merge() only for sorted ranges.
+
+Note that elements of associative and unordered containers are constant to ensure that you can’t compromise the sorted order of the elements due to an element modification. Therefore, you can’t
+use these containers as a destination for modifying algorithms.
+
+
+
+Removing algos:
+----------------------
+Removing algorithms are a special form of modifying algorithms. They can remove the elements either in a single range or while these elements are being copied into another range. As with modifying
+algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
+
+Note that these algorithms remove elements logically only by overwriting them with the following elements that were not removed. Thus, removing algorithms do not change the number of elements
+in the ranges on which they operate. Instead, they return the position of the new “end” of the range. It’s up to the caller to use that new end, such as to remove the elements physically.
+
+remove()				 Removes elements with a given value
+remove_if()			 Removes elements that match a given criterion
+remove_copy() 			Copies elements that do not match a given value
+remove_copy_if() 			Copies elements that do not match a given criterion
+unique() 				Removes adjacent duplicates (elements that are equal to their predecessor)
+unique_copy() 			Copies elements while removing adjacent duplicates
+
+
+Mutating algos:
+--------------------
+
+Mutating algorithms are algorithms that change the order of elements (and not their values) by assigning and swapping their values.
+
+As with modifying algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
+
+reverse_copy() 				Copies the elements while reversing their order
+rotate() 					Rotates the order of the elements 
+rotate_copy()				 Copies the elements while rotating their order
+next_permutation() 				Permutates the order of the elements
+prev_permutation() 				Permutates the order of the elements 
+shuffle() 					Brings the elements into a random order (since C++11)
+random_shuffle() 				Brings the elements into a random order
+partition() 				Changes the order of the elements so that elements that match a criterion are at the front
+stable_partition() 				Same as partition() but preserves the relative order of matching and nonmatching elements
+partition_copy() 				Copies the elements while changing the order so that elements that match a criterion are at the front
+
+
+
+
+
+
+
+
+DOBUTs:
+--------------------
+string::npos;
+operator + is also overloaded for strings that are rvalue references to support the move semantics.
+Thus, if a string argument passed to operator + is no longer needed afterward, you should use move() to pass it to the operator.
+----------------------------------------------
 
 
 

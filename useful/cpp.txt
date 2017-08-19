@@ -1,0 +1,64 @@
+Enumerated constants:
+----------------------------------
+When declaring an enumerated constant, the compiler converts the enumerated values such as Violet and so on into integers.
+Each enumerated value specified is one more than the previous value. You have the choice of specifying a starting value and if
+this is not specified, the compiler takes it as 0. So, North is evaluated as value 0.
+If you want to, you can also specify an explicit value against each of the enumerated constants by initializing them.
+
+enum RainbowColors
+{
+Violet = 0,
+Indigo,
+Blue,
+Green,
+Yellow,
+Orange,
+Red
+};
+
+enum CardinalDirections
+{
+North,
+South,
+East,
+West
+};
+
+these enumerated constants can now be used as variable types that can accept values restricted to those that they have been declared to contain.
+So, if defining a variable that contains the colors of a Rainbow, you declare the variable like this:
+
+RainbowColors MyWorldsColor = Blue;
+
+
+
+Auto:
+--------------------
+
+Using auto requires you to initialize the variable for the compiler, which needs this initialization value in deciding what the variable type can be.
+When you don’t initialize a variable of type auto, you get a compile error.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
