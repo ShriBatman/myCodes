@@ -659,6 +659,544 @@ partition_copy() 				Copies the elements while changing the order so that elemen
 
 
 
+Stacks:
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+In <stack>, the class stack is defined as follows:
+namespace std {
+template <typename T,
+typename Container = deque<T>>
+class stack;
+}
+The first template parameter is the type of the elements. The optional second template parameter defines the container that the stack uses internally for its elements. The default container is a deque.
+It was chosen because, unlike vectors, deques free their memory when elements are removed and don’t have to copy all elements on reallocation.
+
+std::stack<int> st; 						// integer stack
+std::stack<int,std::vector<int>> st; 				// integer stack that uses a vector
+
+
+• push() inserts an element into the stack.
+• top() returns the next element in the stack.
+• pop() removes an element from the stack.
+
+pop() removes the next element but does not return it, whereas top() returns the next element without removing it. Thus, you must always call both functions to process and remove the
+next element from the stack.
+
+the behavior of top() and pop() is undefined if the stack contains no elements. The member functions size() and empty() are provided to check whether the stack contains elements.
+
+
+
+
+Queue:
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+In <queue>, the class queue is defined as follows:
+namespace std {
+template <typename T,
+typename Container = deque<T>>
+class queue;
+}
+The first template parameter is the type of the elements. The optional second template parameter defines the container that the queue uses internally for its elements. The default container is a deque.
+
+std::queue<std::string> buffer; 				// string queue
+std::queue<std::string,std::list<std::string>> buffer;
+
+• push() inserts an element into the queue.
+• front() returns the next element in the queue (the element that was inserted first).
+• back() returns the last element in the queue (the element that was inserted last).
+• pop() removes an element from the queue.
+
+pop() removes the next element but does not return it, whereas front() and back() return the element without removing it.
+
+behavior of front(), back(), and pop() is undefined if the queue contains no elements. The member functions size() and empty() are provided to check whether the queue contains elements.
+
+
+Streams:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+C/C++ IO are based on streams, which are sequence of bytes flowing in and out of the programs (just like water and oil flowing through a pipe). 
+In input operations, data bytes flow from an input source (such as keyboard, file, network or another program) into the program. 
+In output operations, data bytes flow from the program to an output sink (such as console, file, network or another program). 
+Streams acts as an intermediaries between the programs and the actual IO devices.
+
+
+C++ provides both the formatted and unformatted IO functions. In formatted or high-level IO, bytes are grouped and converted to types such as int, double, string or user-defined types.
+In unformatted or low-level IO, bytes are treated as raw bytes and unconverted. Formatted IO operations are supported via overloading the stream insertion (<<) and stream extraction (>>) operators,
+which presents a consistent public IO interface.
+
+To perform input and output, a C++ program:
+1. Construct a stream object.
+2. Connect (Associate) the stream object to an actual IO device (e.g., keyboard, console, file, network, another program).
+3. Perform input/output operations on the stream, via the functions defined in the stream's pubic interface in a device independent manner. Some functions convert the data
+     between the external format and internal format (formatted IO); while other does not (unformatted or binary IO).
+4. Disconnect (Dissociate) the stream to the actual IO device (e.g., close the file).
+5. Free the stream object.
+
+C++ IO is provided in headers <iostream> (which included <ios>, <istream>, <ostream> and <streambuf>), <fstream> (for file IO), and <sstream> (for string IO).
+The header <iomanip> provided manipulators such as setw(), setprecision()setfill() and setbase() for formatting.
+
+
+1. ios_base and ios: superclasses to maintain common stream properties such as format flag, field width, precision and locale. The superclass ios_base (which is not a template class) maintains 
+     data that is independent of the template parameters;whereas the subclass ios (instantiation of template basic_ios<char>) maintains data which is dependent of the template parameters.
+2. istream (basic_istream<char>), ostream (basic_ostream<char>): provide the input and output public interfaces.
+3. iostream (basic_iostream<char>): subclass of both istream and ostream, which supports bidirectional input and output operations. Take note that istream and ostream are unidirectional streams; 
+     whereas iostream is bidirectional. basic_iostream template and iostream class is declared in the <istream> header, not <iostream> header.
+4. ifstream, ofstream and fstream: for file input, output and bidirectional input/output.
+5. istringstream, ostringstream and stringstream: for string buffer input, output and bidirectional input/output.
+6. streambuf, filebuf and stringbuf: provide memory buffer for the stream, file-stream and string-stream, and the public interface for accessing and managing the buffer.
+
+
+The Stream Insertion << and Stream Extraction >> Operators:
+--------------------------------------------------------------------------
+
+Formatted output is carried out on streams via the stream insertion << and stream extraction >> operators.
+The << and >> operators are overloaded to handle fundamental types (such as int and double), and classes (such as string).
+
+
+ostream Class:
+--------------------
+
+The ostream class is a typedef to basic_ostream<char>. It contains two set of output functions: formatted output and unformatted output.
+The formatted output functions (via overloaded stream insertion operator <<) convert numeric values (such as int, double) from their internal representations (e.g., 16-/32-bit int, 64-bit double) to a stream of characters that representing the numeric values in text form.
+The unformatted output functions (e.g., put(), write()) outputs the bytes as they are, without format conversion.
+
+The ostream class overloads the stream insertion << operator for each of the C++ fundamental types.
+
+The << operator returns a reference to the invoking ostream object. Hence, you can concatenate << operations, e.g., cout << 123 << 1.13 << endl;.
+The << operator is also overloaded for the following pointer types:
+const char *, const signed char *, const unsigned char *: for outputting C-strings and literals. It uses the terminating null character to decide the end of the char array.
+void *: can be used to print an address.
+
+You can flush the output buffer via:
+flush member function or manipulator:
+// Member function of ostream class - std::ostream::flush
+ostream & flush ();
+// Example
+cout << "hello";
+cout.flush();
+ 
+// Manipulator - std::flush
+ostream & flush (ostream & os);
+// Example
+cout << "hello" << flush;
+endl manipulator, which inserts a newline and flush the buffer. Outputting a newline character '\n' may not flush the output buffer; but endl does.
+
+cin: output buffer is flushed when input is pending, e.g.,
+cout << "Enter a number: ";
+int number;
+cin << number;  // flush output buffer so as to show the prompting message
+
+
+
+istream Class:
+------------------
+
+the istream class is a typedef to basic_istream<char>. It also supports formatted input and unformatted input.
+In formatting input, via overloading the >> extraction operator, it converts the text form (a stream of character) into internal representation (such as 16-/32-bit int, 64-byte double).
+In unformatting input, such as get(), getline(), read(), it reads the characters as they are, without conversion.
+The >> operator returns a reference to the invokind istream object. Hence, you can concatenate >> operations.
+
+You can use the ignore() to discard characters in the input buffer:
+istream & ignore (int n = 1, int delim = EOF);
+    // Read and discard up to n characters or delim, whichever comes first
+ 
+// Examples
+cin.ignore(numeric_limits<streamsize>::max());        // Ignore to the end-of-file
+cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignore to the end-of-line
+
+Unformatted Input/Output Functions:
+-----------------------------------------------
+
+put():
+The ostream's member function put() can be used to put out a char. put() returns the invoking ostream reference, and thus, can be cascaded.
+cout.put('A').put('p').put('p').put('\n');
+
+
+get(),getline():
+
+int get ();   
+      // Get a char and return as int. It returns EOF at end-of-file
+istream & get (char & c);
+      // Get a char, store in c and return the invoking istream reference
+ 
+// C-string input
+istream & get (char * cstr, streamsize n, char delim = '\n');
+      // Get n-1 chars or until delimiter and store in C-string array cstr.
+      // Append null char to terminate C-string
+      // Keep the delim char in the input stream.
+istream & getline (char * cstr, streamsize n, char delim = '\n');
+      // Same as get(), but extract and discard delim char from the
+      // input stream.
+
+
+
+read(),write(),gcount():
+
+// istream class
+istream & read (char * buf, streamsize n);
+      // Read n characters from istream and keep in char array buf.
+      // Unlike get()/getline(), it does not append null char at the end of input.
+      // It is used for binary input, instead of C-string.
+streamsize gcount() const;
+      // Return the number of character extracted by the last unformatted input operation
+      // get(), getline(), ignore() or read().
+ 
+// ostream class
+ostream & write (const char * buf, streamsize n)
+      // Write n character from char array
+
+peek(),putback():
+
+char peek ();
+      //returns the next character in the input buffer without extracting it.
+ 
+istream & putback (char c);
+      // insert the character back to the input buffer.
+
+States of Stream:
+-----------------------
+
+eofbit: set when an input operation reaches end-of-file.
+failbit: The last input operation failed to read the expected characters or output operation failed to write the expected characters, e.g., getline() reads n characters without reaching delimiter character.
+badbit: serious error due to failure of an IO operation (e.g. file read/write error) or stream buffer.
+goodbit: Absence of above error with value of 0.
+
+
+These flags are defined as public static members in ios_base. They can be accessed directly via ios_base::failbit or via subclasses such as cin::failbit, ios::failbit. However, it is more convenience to use these public member functions of ios class:
+good(): returns true if goodbit is set (i.e., no error).
+eof(): returns true if eofbit is set.
+fail(): returns true if failbit or badbit is set.
+bad(): returns true if badbit is set.
+clear(): clear eofbit, failbit and badbit
+
+
+
+C++ provides a set of manipulators to perform input and output formatting:
+<iomanip> header: setw(), setprecision(), setbas(), setfill().
+<iostream> header: fixed|scientific, left|right|internal, boolalpha|noboolalpha, etc
+
+Field Width (setw), Fill Character (setfill) and Alignment (left|right|internal):
+
+The ios_base superclass (included in <iostream> header) maintains data members for field-width (width) and formatting flags (fmtflags); and provides member functions (such as width(), setf()) for manipulating them.
+However, it is more convenience to use the so-called IO manipulators, which returns a reference to the invoking stream object and thus can be concatenated in << operator (e.g., cout << setfill(':') << left << setw(5) <<...). They are:
+setw() manipulator (in <iomanip> header) to set the field width.
+setfill() manipulator (in <iomanip> header) to set the fill character
+left|right|internal manipulator (in <iostream> header) to set the text alignment.
+The default field-width is 0, i.e., just enough space to display the value. C++ never truncates data, and will expand the field to display the entire value if the field-width is too small. The setw() operation is non-sticky. That is, it is applicable only to the next IO operation, and reset back to 0 after the operation. The field-width property is applicable to both output and input operations.
+Except setw(), all the other IO manipulators are sticky, i.e., they take effect until a new value is set.
+// Test setw() - need <iomanip>
+cout << "|" << setw(5) << 123 << "|" << 123 << endl;  // |  123|123
+         // setw() is non-sticky. "|" and 123 displayed with default width
+cout << "|" << setw(5) << -123 << "|" << endl;        // | -123|123
+         // minus sign is included in field width
+cout << "|" << setw(5) << 1234567 << "|" << endl;     // |1234567|
+         // no truncation of data
+ 
+// Test setfill() and alignment (left|right|internal)
+cout << setfill('_');   // Set the fill character (sticky)
+cout << setw(6) << 123 << setw(4) << 12 << endl;      // ___123__12
+cout << left;           // left align (sticky)
+cout << setw(6) << 123 << setw(4) << 12 << endl;      // 123___12__
+Example: Alignment
+cout << showpos;  // show positive sign
+cout             << '|' << setw(6) << 123 << '|' << endl;  // |  +123| (default alignment)
+cout << left     << '|' << setw(6) << 123 << '|' << endl;  // |+123  |
+cout << right    << '|' << setw(6) << 123 << '|' << endl;  // |  +123|
+cout << internal << '|' << setw(6) << 123 << '|' << endl;  // |+  123|
+
+The internal alignment left-align the sign, but right-align the number, as illustrated.
+
+You can also use ostream's member function width() (e.g. cout.width(n)) to set the field width, but width() cannot be used with cout << operator.
+
+
+Floating-point Format (fixed|scientific) and Precision (setprecision):
+The IO stream superclass ios_base also maintains data member for the floating-point precision and display format; and provides member functions (such as precision()) for manipulating them.
+Again, it is more convenience to use IO manipulators, which can be concatenated in <<. They are:
+setprecision() manipulator (in <iomanip> header) to set the precision of floating-point number.
+fixed|scientific manipulators (in <iostream> header) to set the floating-point display format.
+Floating point number can be display in 3 formatting modes: default|fixed|scientific. The precision is interpreted differently in default and non-default modes (due to legacy).
+In default mode (neither fixed nor scientific used), a floating-point number is displayed in fixed-point notation (e.g., 12.34) for exponent in the range of [-4, 5]; and scientific notation (e.g., 1.2e+006) otherwise. The precision in default mode includes digits before and after the decimal point but exclude the leading zeros. Fewer digits might be shown as the trailing zeros are not displayed. The default precision is 6. See the earlier examples for default mode with default precision of 6.
+As mentioned, the trailing zeros are not displayed in default mode, you can use manipulator showpoint|noshowpoint to show or hide the trailing zeros.
+In both fixed (e.g., 12.34) and scientific (e.g., 1.2e+006), the precision sets the number of digits after decimal point. The default precision is also 6.
+For examples,
+// default floating-point format
+cout << "|" << 123.456789 << "|" << endl;    // |123.457| (fixed-point format)
+         // default precision is 6, i.e., 6 digits before and after the decimal point
+cout << "|" << 1234567.89 << "|" << endl;    // |1.23457e+006| (scientific-notation for e>=6)
+         // default precision is 6, i.e., 6 digits before and after the decimal point
+ 
+// showpoint - show trailing zeros in default mode
+cout << showpoint << 123. << "," << 123.4 << endl; // 123.000,123.400
+cout << noshowpoint << 123. << endl;               // 123
+ 
+// fixed-point formatting
+cout << fixed;
+cout << "|" << 1234567.89 << "|" << endl;    // |1234567.890000|
+         // default precision is 6, i.e., 6 digits after the decimal point
+ 
+// scientific formatting
+cout << scientific;   
+cout << "|" << 1234567.89 << "|" << endl;    // |1.234568e+006|
+         // default precision is 6, i.e., 6 digits after the decimal point
+ 
+// Test precision
+cout << fixed << setprecision(2);   // sticky
+cout << "|" << 123.456789 << "|" << endl;  // |123.46|
+cout << "|" << 123. << "|" << endl;        // |123.00|
+ 
+cout << setprecision(0);
+cout << "|" << 123.456789 << "|" << endl;  // |123|
+You can also use ostream's member function precision(n) (e.g. cout.precision(n)) to set the floating-point precision, but precision() cannot be used with cout << operator.
+
+
+Integral Number Base (dec|oct|hex, setbase):
+C++ support number bases (radixes) of decimal, hexadecimal and octal. You can use the following manipulators (defined in ios_base class, included in <iostream> header) to manipulate the integral number base:
+hex|dec|oct: Set the integral number base. Negative hex and oct are displayed in 2's complement format. Alternatively, you can use setbase(8|10|16) (in header <iomanip>).
+showbase|noshowbase: write hex values with 0x prefix; and oct values with 0 prefix.
+showpos|noshowpos: write positive dec value with + sign.
+uppercase|nouppercase: write uppercase in certain insertion operations, e.g., hex digits. It does not convert characters or strings to uppercase!
+These manipulators are sticky.
+For examples,
+cout << 1234 << endl;        // 1234 (default is dec)
+cout << hex << 1234 << endl; // 4d2
+cout << 1234 << "," << -1234 << endl; // 4d2,fffffb2e
+                                      // (hex is sticky, negative number in 2's complement)
+cout << oct << 1234 << endl;          // 2322
+cout << 1234 << "," << -1234 << endl; // 2322,37777775456
+cout << setbase(10) << 1234 << endl;  // 1234 (setbase requires <iomanip> header)
+ 
+// showbase - show hex with 0x prefix; oct with 0 prefix
+cout << showbase << 123 << "," << hex << 123 << "," << oct << 123 << endl;  // 123,0x7b,0173
+cout << noshowbase << dec;
+ 
+// showpos - show dec's plus (+) sign
+cout << showpos << 123 << endl;  // +123
+ 
+// uppercase - display in uppercase (e.g., hex digits)
+cout << uppercase << hex << 123 << endl;  // 7B
+
+
+
+
+bool values (boolalpha|noboolalpha):
+boolalpha|noboolalpha: read/write bool value as alphabetic string true or false.
+// boolalpha - display bool as true/false
+cout << boolalpha << false << "," << true << endl;   // false,true
+cout << noboolalpha << false << "," << true << endl; // 0,1
+
+Other manipulators:
+skipws|noskipws: skip leading white spaces for certain input operations.
+unitbuf|nounibuf: flush output after each insertion operation.
+
+Notes:
+You need to include the <iomanip> header for setw(), setprecision(), setfill(), and setbase().
+You can use ios_base's (in <iostream> header) member functions setf() and unsetf() to set the individual formatting flags. However, they are not as user-friendly as using manipulators as discussed above. Furthermore, they cannot be used with cout << operator.
+
+FILE:
+-------
+
+In header <fstream>, the class ofstream is a subclass of ostream; ifstream is a subclass of istream; and fstream is a subclass of iostream for bi-directional IO. You need to include both <iostream> and <fstream> headers in your program for file IO.
+To write to a file, you construct a ofsteam object connecting to the output file, and use the ostream functions such as stream insertion <<, put() and write(). Similarly, to read from an input file, construct an ifstream object connecting to the input file, and use the istream functions such as stream extraction >>, get(), getline() and read().
+
+
+
+FILE OUTPUT:
+-----
+The steps are:
+Construct an ostream object.
+Connect it to a file (i.e., file open) and set the mode of file operation (e.g, truncate, append).
+Perform output operation via insertion >> operator or write(), put() functions.
+Disconnect (close the file which flushes the output buffer) and free the ostream object.
+#include <fstream>
+.......
+ofstream fout;
+fout.open(filename, mode);
+......
+fout.close();
+ 
+// OR combine declaration and open()
+ofstream fout(filename, mode);
+By default, opening an output file creates a new file if the filename does not exist; or truncates it (clear its content) and starts writing as an empty file.
+open(), close() and is_open()
+void open (const char* filename,
+           ios::openmode mode = ios::in | ios::out);
+   // open() accepts only C-string. For string object, need to use c_str() to get the C-string
+ 
+void close ();    // Closes the file, flush the buffer and disconnect from stream object
+ 
+bool is_open ();  // Returns true if the file is successfully opened
+
+
+File Modes:
+File modes are defined as static public member in ios_base superclass. They can be referenced from ios_base or its subclasses - we typically use subclass ios. The available file mode flags are:
+ios::in - open file for input operation
+ios::out - open file for output operation
+ios::app - output appends at the end of the file.
+ios::trunc - truncate the file and discard old contents.
+ios::binary - for binary (raw byte) IO operation, instead of character-based.
+ios::ate - position the file pointer "at the end" for input/output.
+You can set multiple flags via bit-or (|) operator, e.g., ios::out | ios::app to append output at the end of the file.
+For output, the default is ios::out | ios::trunc. For input, the default is ios::in.
+
+
+FILE INPUT:
+The steps are:
+Construct an istream object.
+Connect it to a file (i.e., file open) and set the mode of file operation.
+Perform output operation via extraction << operator or read(), get(), getline() functions.
+Disconnect (close the file) and free the istream object.
+#include <fstream>
+.......
+ifstream fin;
+fin.open(filename, mode);
+......
+fin.close();
+ 
+// OR combine declaration and open()
+ifstream fin(filename, mode);
+
+
+SAMPLE CODE:
+/* Testing Simple File IO (TestSimpleFileIO.cpp) */
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
+using namespace std;
+ 
+int main() {
+   string filename = "test.txt";
+ 
+   // Write to File
+   ofstream fout(filename.c_str());  // default mode is ios::out | ios::trunc
+   if (!fout) {
+      cerr << "error: open file for output failed!" << endl;
+      abort();  // in <cstdlib> header
+   }
+   fout << "apple" << endl;
+   fout << "orange" << endl;
+   fout << "banana" << endl;
+   fout.close();
+ 
+   // Read from file
+   ifstream fin(filename.c_str());  // default mode ios::in
+   if (!fin) {
+      cerr << "error: open file for input failed!" << endl;
+      abort();
+   }
+   char ch;
+   while (fin.get(ch)) {  // till end-of-file
+      cout << ch;
+   }
+   fin.close();
+   return 0;
+}
+Program Notes:
+Most of the <fstream> functions (such as constructors, open()) supports filename in C-string only. You may need to extract the C-string from string object via the c_str() member function.
+You could use is_open() to check if the file is opened successfully.
+The get(char &) function returns a null pointer (converted to false) when it reaches end-of-file
+
+We need to use read() and write() member functions for binary file (file mode of ios::binary), which read/write raw bytes without interpreting the bytes.
+
+
+SAMPLE CODE:
+/* Testing Binary File IO (TestBinaryFileIO.cpp) */
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
+using namespace std;
+ 
+int main() {
+   string filename = "test.bin";
+ 
+   // Write to File
+   ofstream fout(filename.c_str(), ios::out | ios::binary);
+   if (!fout.is_open()) {
+      cerr << "error: open file for output failed!" << endl;
+      abort();
+   }
+   int i = 1234;
+   double d = 12.34;
+   fout.write((char *)&i, sizeof(int));
+   fout.write((char *)&d, sizeof(double));
+   fout.close();
+ 
+   // Read from file
+   ifstream fin(filename.c_str(), ios::in | ios::binary);
+   if (!fin.is_open()) {
+      cerr << "error: open file for input failed!" << endl;
+      abort();
+   }
+   int i_in;
+   double d_in;
+   fin.read((char *)&i_in, sizeof(int));
+   cout << i_in << endl;
+   fin.read((char *)&d_in, sizeof(double));
+   cout << d_in << endl;
+   fin.close();
+   return 0;
+}
+
+
+
+Random Access File:
+
+Random access file is associated with a file pointer, which can be moved directly to any location in the file. Random access is crucial in certain applications such as databases and indexes.
+You can position the input pointer via seekg() and output pointer via seekp(). Each of them has two versions: absolute and relative positioning.
+// Input file pointer (g for get)
+istream & seekg (streampos pos);  // absolute position relative to beginning
+istream & seekg (streamoff offset, ios::seekdir way);
+      // with offset (positive or negative) relative to seekdir:
+      // ios::beg (beginning), ios::cur (current), ios::end (end)
+streampos tellg ();  // Returns the position of input pointer
+
+// Output file pointer (p for put)
+ostream & seekp (streampos pos);  // absolute
+ostream & seekp (streamoff offset, ios::seekdir way);  // relative
+streampos tellp ();   // Returns the position of output pointer
+Random access file is typically process as binary file, in both input and output modes.
+
+
+STRING STREAMS:
+-------------------------
+
+The string streams is based on ostringstream (subclass of ostream), istringstream (subclass of istream) and bi-directional stringstream (subclass of iostream).
+typedef basic_istringstream<char> istringstream;
+typedef basic_ostringstream<char> ostringstream;
+Stream input can be used to validate input data; stream output can be used to format the output.
+ostringstream
+explicit ostringstream (ios::openmode mode = ios::out);  // default with empty string
+explicit ostringstream (const string & buf, 
+                        ios::openmode mode = ios::out);  // with initial str
+
+string str () const;           // Get contents
+void str (const string & str); // Set contents
+For example,
+// construct output string stream (buffer) - need <sstream> header
+ostringstream sout;  
+    
+// Write into string buffer
+sout << "apple" << endl;
+sout << "orange" << endl;
+sout << "banana" << endl;
+ 
+// Get contents
+cout << sout.str() << endl;
+The ostringstream is responsible for dynamic memory allocation and management.
+istringstream
+explicit istringstream (ios::openmode mode = ios::in);  // default with empty string
+explicit istringstream (const string & buf,
+                        ios::openmode mode = ios::in);  // with initial string
+For example,
+// construct input string stream (buffer) - need <sstream> header
+istringstream sin("123 12.34 hello");
+ 
+// Read from buffer
+int i;
+double d;
+string s;
+sin >> i >> d >> s;
+cout << i << "," << d << "," << s << endl;
 
 
 

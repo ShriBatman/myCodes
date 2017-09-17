@@ -3,6 +3,7 @@
 
 /////sfgsdfg
 
+           ///asfsd
 int merge(int arr[],int lb,int x,int ub)
 {
 	int k,t,m,n;
@@ -33,6 +34,7 @@ int merge(int arr[],int lb,int x,int ub)
 			arr[k]=b[n];
 			n++;
 		}
+		//sdfs
 		else
 		{
 			arr[k]=a[m];
@@ -43,6 +45,7 @@ int merge(int arr[],int lb,int x,int ub)
 	
 	while(m<i)
 	{
+		
 		arr[k]=a[m];
 		m++;
 		k++;
@@ -57,6 +60,7 @@ int merge(int arr[],int lb,int x,int ub)
 }
 
 /*sdfs
+sdfasd
 
 sdgfsd*/
 
