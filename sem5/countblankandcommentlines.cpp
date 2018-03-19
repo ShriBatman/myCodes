@@ -16,7 +16,7 @@ int main()
 	while(fp.eof()==0){
 		getline(fp,s,'\n');
 		
-		if(s=="" || s=="	"){
+		if (s=="" || s=="	"){
 			blank++;
 			if(commentflag) comment++;
 		}

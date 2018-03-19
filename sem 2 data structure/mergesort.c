@@ -1,8 +1,5 @@
 #include<stdio.h>
 
-
-/////sfgsdfg
-
 int merge(int arr[],int lb,int x,int ub)
 {
 	int k,t,m,n;

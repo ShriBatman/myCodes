@@ -94,6 +94,23 @@ c.front()                  Returns the first element (no check whether a first e
 
 
 
+Pair:
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+pair<T1,T2> p	 	Default constructor; creates a pair of values of types T1 and T2, initialized with their default constructors
+pair<T1,T2> p(val1,val1) 	Creates a pair of values of types T1 and T2, initialized with val1 and val1
+pair<T1,T2> p(p2)		 Copy constructor; creates p as copy of p2
+p = p2 			Assigns the values of p2 to p (implicit type conversions are possible since C++11)
+p.first 			Yields the first value inside the pair (direct member access)
+p.second 			Yields the second value inside the pair (direct member access)
+get<0>(p) 			Equivalent to p.first (since C++11)
+get<1>(p) 			Equivalent to p.second (since C++11)
+p1 == p2 			Returns whether p1 is equal to p2 (equivalent to p1.first==p2.first && p1.second==p2.second)
+p1 != p2 			Returns whether p1 is not equal to p2 (!(p1==p2)) p1 < p2 Returns whether p1 is less than p2 (compares first or if equal second of both values)
+p1.swap(p2)		 Swaps the data of p1 and p2 (since C++11)
+swap(p1,p2) 		Same (as global function) (since C++11)
+make_pair(val1,val2)	 Returns a pair with types and values of val1 and val2
+
 
 
 
@@ -161,8 +178,8 @@ atoi(s.c_str())             // convert string into integer
 
 
 std::string s(’x’);             // ERROR
-std::string s(1,’x’);        // OK, creates a string that has one character ’x’
-std::string s({’x’});        // OK, ditto (since C++11)
+std::string s(1,’x’);         // OK, creates a string that has one character ’x’
+std::string s({’x’});         // OK, ditto (since C++11)
 
 
 initialize:
@@ -457,6 +474,11 @@ while (getline(std::cin,s,’:’)) { // for each token separated by ’:’
 ...
 }
 
+string p,q;
+getline(cin,p);   			// without delimiter
+getline(cin,q,cin.widen(' '));  		//with delimiter
+cout<<p<<q;
+
 
 searching():
 ------------------
@@ -476,9 +498,9 @@ All search functions return the index of the first character of the character se
 
 std::string s("Hi Bill, I’m ill, so please pay the bill");
 s.find("il") 			// returns 4 (first substring "il")
-s.find("il",10)			 // returns 13 (first substring "il" starting from s[10])
+s.find("il",10)			// returns 13 (first substring "il" starting from s[10])
 s.rfind("il") 			// returns 37 (last substring "il")
-s.find_first_of("il")			 // returns 1 (first char ’i’ or ’l’)
+s.find_first_of("il")			// returns 1 (first char ’i’ or ’l’)
 s.find_last_of("il") 			// returns 39 (last char ’i’ or ’l’)
 s.find_first_not_of("il") 		// returns 0 (first char neither ’i’ nor ’l’)
 s.find_last_not_of("il") 		// returns 36 (last char neither ’i’ nor ’l’)
@@ -1207,6 +1229,7 @@ string::npos;
 operator + is also overloaded for strings that are rvalue references to support the move semantics.
 Thus, if a string argument passed to operator + is no longer needed afterward, you should use move() to pass it to the operator.
 ----------------------------------------------
+
 
 
 

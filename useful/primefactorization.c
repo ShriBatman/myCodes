@@ -14,7 +14,7 @@ int main()
 		{
 			if(n%j==0)
 			{
-				printf("%lld\n",j);
+				//printf("%lld\n",j);
 				k=0;
 				while(n%j==0)
 				{
