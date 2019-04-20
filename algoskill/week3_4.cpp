@@ -6,13 +6,13 @@ struct node{
     int strength;
     vector<int> roll;
     vector<string> name;
-    struct node* next;
-    struct node* prev;
+    node* next;
+    node* prev;
 };
 
-struct node* newnode(){
+node* newnode(){
     int i,j,k,l;
-    struct node* topnode = new struct node();
+    node* topnode = new node();
             topnode->next = NULL;
             topnode->prev = NULL;
             cin>>k;
@@ -36,9 +36,9 @@ struct node* newnode(){
             return topnode;
 }
 
-struct node* new_insert(struct node* head,int pos){
-    struct node* mynode = newnode();
-    struct node* temp = head;
+node* new_insert(node* head,int pos){
+    node* mynode = newnode();
+    node* temp = head;
 
     if(pos==0){
             head = mynode;
@@ -66,10 +66,10 @@ struct node* new_insert(struct node* head,int pos){
     return head;
 }
 
-struct node* del(struct node* head,int pos){
+node* del(node* head,int pos){
 
-    struct node* temp = head;
-    struct node* temp2;
+    node* temp = head;
+    node* temp2;
     if(pos==1){
         head = head->next;
         head->prev = NULL;
@@ -94,11 +94,11 @@ struct node* del(struct node* head,int pos){
 int main(){
     int i,j,k,l,m,n;
     //struct node circle ;//= new struct node();
-    struct node* head=NULL;
-    struct node* cur=NULL;
+    node* head=NULL;
+    node* cur=NULL;
     for(i=0;i<4;i++){
 
-            struct node* mynode = newnode();
+            node* mynode = newnode();
             if(head==NULL){
                 head = mynode;
                 cur = mynode;
@@ -111,7 +111,7 @@ int main(){
     }
 
 
-    struct node* temp = head;
+    node* temp = head;
 
     while(temp!=NULL){
         cout<<temp->strength<<"\n";

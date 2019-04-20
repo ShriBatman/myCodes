@@ -1,5 +1,132 @@
 Containers:
 
+Vectors:
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+* when pass a vector to a function a copy of that vector is passed which is inefficient so pass them as reference. 
+
+*multidimensional vectors:
+vector< vector< int > > Matrix(N, vector< int >(M, -1));\
+
+* we can use resize() to remove some of the elements from the back of the vector or add elements.
+when we increase the size of the vector the newly added memory is initialized with zeros.
+so using push_back() will further increase the size beyond those zero initialized elements.
+if we want to write on those elements use: v[i] = ...; not the push_back() function.
+
+assignment:
+------------------
+c = c2                                   Assigns all elements of c2 to c
+c.fill(val)                            Assigns val to each element in array c
+c1.swap(c2)                      Swaps the data of c1 and c2
+swap(c1,c2)                      Swaps the data of c1 and c2
+
+
+access:
+----------
+c[idx]                       Returns the element with index idx (no range checking)
+c.at(idx)                  Returns the element with index idx (throws range-error exception if idx is out of range)
+c.front()                  Returns the first element (no check whether a first element exists)
+
+
+
+
+Pair:
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+pair<T1,T2> p	 	Default constructor; creates a pair of values of types T1 and T2, initialized with their default constructors
+pair<T1,T2> p(val1,val1) 	Creates a pair of values of types T1 and T2, initialized with val1 and val1
+pair<T1,T2> p(p2)		 Copy constructor; creates p as copy of p2
+p = p2 			Assigns the values of p2 to p (implicit type conversions are possible since C++11)
+p.first 			Yields the first value inside the pair (direct member access)
+p.second 			Yields the second value inside the pair (direct member access)
+get<0>(p) 			Equivalent to p.first (since C++11)
+get<1>(p) 			Equivalent to p.second (since C++11)
+p1 == p2 			Returns whether p1 is equal to p2 (equivalent to p1.first==p2.first && p1.second==p2.second)
+p1 != p2 			Returns whether p1 is not equal to p2 (!(p1==p2)) p1 < p2 Returns whether p1 is less than p2 (compares first or if equal second of both values)
+p1.swap(p2)		 Swaps the data of p1 and p2 (since C++11)
+swap(p1,p2) 		Same (as global function) (since C++11)
+make_pair(val1,val2)	 Returns a pair with types and values of val1 and val2
+
+
+
+Set:
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Initialize:
+set<int> s;
+int data[5] = {...........}
+set<int> s(data,data+5);
+
+Basic operations:
+s.insert(x);
+s.erase(x);
+s.erase(it1,it2)
+s.size();
+
+
+Traverse:
+is not a linear container. use iterators to traverse.
+
+for(set<int>::const_iterator it = s.begin(); it! = s.end(); it++){
+.............
+}
+
+useful macros:
+#define tr(container, it)  for(typeof(container.begin()) it = container.begin(); it != container.end(); it++)
+int r = 0;
+tr(v, it) {
+r += (it)(*it);
+}
+
+set< pair< string, pair< int, vector< int > > > SS;
+int total = 0;
+tr(SS, it) {
+total += it->second.first;
+}
+
+
+
+#define all(c) c.begin(), c.end()
+#define present(container, element) (container.find(element) != container.end())
+#define cpresent(container, element) (find(all(container),element) != container.end())
+
+present is for set and maps while cpresent is for vector.
+
+
+Check presence of an element:
+s.find(x)   returns s.end if not present elese iterator to the element in O(logN).
+s.count(x) counts the no. of occurences of the element x in s in O(logN).
+
+
+*Internally map and set are almost always stored as red-black trees.
+*the elements of map and set are always sorted in ascending order while traversing these containers.
+*that set and map have the member functions find() and count(), which works in O(log N), while std::find() and std::count() take O(N)
+* .size() to find the no of elements in a set or map.
+
+Map
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+initialize:
+map<string,int> m;
+m["sdf"] = 5;
+theMap.insert( make_pair( "Key 1", -1 ) ); 
+theMap.insert( make_pair( "Another key!", 32 ) ); 
+
+
+
+if(M.find("SRM") != M.end()) {
+M.erase(M.find("SRM")); // or even M.erase("SRM")
+}
+
+
+void f(const map< string, int >& M) {
+if(M["the meaning"] == 42) { // Error! Cannot use [] on const map objects!
+}
+if(M.find("the meaning") != M.end() && M.find("the meaning")->second == 42) { // Correct
+cout << "Don't Panic!" << endl;
+}
+}
+
 Arrays:
 --------------------------------------------------------------------------------------------------------
 static C style arrays
@@ -74,46 +201,493 @@ c.back()                   Returns the last element (no check whether a last ele
 
 
 
-Vectors:
------------------------------------------------------------------------------------------------------------------------------------------------------
+Dumb Dumb Me!!
+---------------------------------------------------------------------------------------------------------------------------------------------
 
-assignment:
-------------------
-c = c2                                   Assigns all elements of c2 to c
-c.fill(val)                            Assigns val to each element in array c
-c1.swap(c2)                      Swaps the data of c1 and c2
-swap(c1,c2)                      Swaps the data of c1 and c2
+i++ : increments thevalue of i but returns the original value of i before increment.
+//j=i++; i=2, j=1
+ 
+++i : increments the value and returns the incremented value
+//j=++i; i=2,j=2
 
+CONST:
+*is a type qualifier. A type qualifier is used to express additional info about a value through type system. When a variable is initialized using the const type qualifier, it will not accept further change in its value.
 
-access:
-----------
-c[idx]                       Returns the element with index idx (no range checking)
-c.at(idx)                  Returns the element with index idx (throws range-error exception if idx is out of range)
-c.front()                  Returns the first element (no check whether a first element exists)
+*if a variable is const the we cannot change its value.(compilation occurs).but we can use pointer to change its value.
+    const int i = 0;
+    int *ptr = &i;
+    *ptr = 990;
+    cout<<i;     //990
 
-
-
-
-Pair:
------------------------------------------------------------------------------------------------------------------------------------------------
-
-pair<T1,T2> p	 	Default constructor; creates a pair of values of types T1 and T2, initialized with their default constructors
-pair<T1,T2> p(val1,val1) 	Creates a pair of values of types T1 and T2, initialized with val1 and val1
-pair<T1,T2> p(p2)		 Copy constructor; creates p as copy of p2
-p = p2 			Assigns the values of p2 to p (implicit type conversions are possible since C++11)
-p.first 			Yields the first value inside the pair (direct member access)
-p.second 			Yields the second value inside the pair (direct member access)
-get<0>(p) 			Equivalent to p.first (since C++11)
-get<1>(p) 			Equivalent to p.second (since C++11)
-p1 == p2 			Returns whether p1 is equal to p2 (equivalent to p1.first==p2.first && p1.second==p2.second)
-p1 != p2 			Returns whether p1 is not equal to p2 (!(p1==p2)) p1 < p2 Returns whether p1 is less than p2 (compares first or if equal second of both values)
-p1.swap(p2)		 Swaps the data of p1 and p2 (since C++11)
-swap(p1,p2) 		Same (as global function) (since C++11)
-make_pair(val1,val2)	 Returns a pair with types and values of val1 and val2
+int const *ptr;
+a pointer to const can be made to point to any variable but we cannot change the value of the variable 
+using the pointer.
 
 
+int *const ptr;
+a constant pointer can be used to change the value of the variable but we cannot change the variable
+it points to.
+
+const int *const ptr;
+we cannot change the variable ptr is pointing to as well as cannot change the value of the variable using ptr.
+
+const member function:
+    class Test{
+        int get() const{ return x;}
+    }
+
+a const member function does not allows the function the object its begin called on.
+a const object can call both type of functions const/ non const but a non const object can only call non const member functions.
 
 
+STATIC: is a storage specifier.
+*determines the lifetime and visibility/accessibility of the variable. This means if a variable is declared as a static variable, it will remain in the memory the whole time when the program is running.
+
+static data_type var = value;
+
+*static variables stay in memory even after they are out of the scope.
+    #include<stdio.h> 
+    int fun() 
+    { 
+      static int count = 0; 
+      count++; 
+      return count; 
+    }   
+    int main() 
+    { 
+      printf("%d ", fun()); 
+      printf("%d ", fun()); 
+      return 0; 
+    }
+
+    output: 1 2
+
+*static variables are allocated memory in data segment not the stack.
+*static vars like global vars are initialized with zero if not explicitly initialized.
+
+*in C static vars can only be initialized using constant literals (cannot initialized using functions).(not true for c++).
+
+    #include<stdio.h> 
+    int initializer(void) 
+    { 
+        return 50; 
+    } 
+    int main() 
+    { 
+        static int i = initializer(); 
+        printf(" value of i = %d", i); 
+        getchar(); 
+        return 0; 
+    }
+    output:
+    In function 'main':
+    9:5: error: initializer element is not constant
+         static int i = initializer();
+         ^
+
+
+* a static const var will retain its value till the execution of the program and also, it will not accept any change in its value
+
+
+Preprocessors:
+*all lines that start with # are processed by preprocessor which is a special program invoked by the compiler.
+
+
+#define And Macros:
+*it sets up a macro. A macro causes a text to replace before compilation takes place.
+*Macros are pre-processed which means that all the macros would be processed before your program compiles.
+*Macros are typically faster than functions as they don’t involve actual function call overhead.
+*In macros, no type checking(incompatible operand, etc.) is done and can lead to errors/side-effects. Also, macros do not check for compilation error (if any).
+    #include<stdio.h> 
+    #define CUBE(b) b*b*b 
+    int main() 
+    { 
+         printf("%d", CUBE(1+2)); 
+         return 0; 
+    }
+    Output: Unexpected output.
+
+
+
+
+
+Things I Get Confused with:
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+//passing a 2d array to a function:
+
+    void func(int row,int col, int arr[row][col]){
+    ...
+    }
+    int main(){
+    func(row,col,arr);
+    }
+
+
+    void func(int **arr, int row ,int col){.....}
+    int main(){
+    int **arr; // is the pointer to the 2d array;
+    func(arr,row,col);
+    }
+
+
+
+Pointer to pointer:
+//not valid
+    int **ptr = &&value
+
+//valid
+    int *ptr = &value;
+    int **ptrptr  = &ptr;
+    cout<<**ptrptr;
+    int **ptr = nullptr;
+
+//arrays of pointer
+    int **arr = new int*[10];
+    int *p;
+    arr[0] = p;
+    cout<<*arr[i];
+
+//2D dynamically allocated arrays
+    int **array = new int*[10]; // allocate an array of 10 int pointers — these are our rows
+    for (int count = 0; count < 10; ++count)
+        array[count] = new int[5]; // these are our columns
+
+//passing arrays
+When passing an array as an argument to a function, a fixed array decays into a pointer, and the pointer is passed to the function.
+    void printSize(int *array)
+    {
+        // array is treated as a pointer here
+        std::cout << sizeof(array) << '\n'; // prints the size of a pointer, not the size of the array!
+    }
+    int main()
+    {
+        printSize(array); // the array argument decays into a pointer here
+    }
+
+
+// C++ will implicitly convert parameter array[] to *array
+    void printSize(int array[])
+    {
+        // array is treated as a pointer here, not a fixed array
+        std::cout << sizeof(array) << '\n'; // prints the size of a pointer, not the size of the array!
+    }
+    int main()
+    {
+        printSize(array); // the array argument decays into a pointer here
+    }
+
+*The fact that arrays decay into pointers when passed to a function explains the underlying reason why 
+  changing an array in a function changes the actual array argument passed in.
+*it is worth noting that arrays that are part of structs or classes do not decay when the whole struct or class is passed to a function.
+
+
+//pass by address
+    void foo(int *ptr)
+    {
+        *ptr = 6;
+    } 
+    int main()
+    {
+        int value = 5;
+     
+        std::cout << "value = " << value << '\n'; //out 5
+        foo(&value);
+        std::cout << "value = " << value << '\n'; // out 6
+        return 0;
+    }
+
+use const if the function doesn't need to modify the variable/array.
+
+Addresses are actually passed by value
+
+When you pass a pointer to a function by address, the pointer’s value (the address it points to) is copied from the argument to the function’s parameter.  
+If you change the function parameter’s value, you are only changing a copy. Consequently, the original pointer argument will not be changed.
+
+    void setToNull(int *tempPtr)
+    {
+        // we're making tempPtr point at something else, not changing the value that tempPtr points to.
+        tempPtr = nullptr; // use 0 instead if not C++11
+    } 
+    int main()
+    { 
+        // First we set ptr to the address of five, which means *ptr = 5
+        int five = 5;
+        int *ptr = &five;
+    	
+        // This will print 5
+        std::cout << *ptr;
+     
+        // tempPtr will receive a copy of ptr
+        setToNull(ptr);
+     
+        // ptr is still set to the address of five!
+     
+        // This will print 5
+        if (ptr)
+            std::cout << *ptr;
+        else
+            std::cout << " ptr is null";
+     
+        return 0;
+    }
+
+When passing an argument by address, the function parameter variable receives a copy of the address from the argument. 
+At this point, the function parameter and the argument both point to the same value.
+
+If the function parameter is then dereferenced to change the value being pointed to, that will impact the value the argument is pointing to, 
+since both the function parameter and argument are pointing to the same value!
+
+If the function parameter is assigned a different address, that will not impact the argument, since the function parameter is a copy, 
+and changing the copy won’t impact the original. 
+After changing the function parameter’s address, the function parameter and argument will point to different values, 
+so dereferencing the parameter and changing the value will no longer affect the value pointed to by the argument.
+
+
+
+//rvalues and lvalues:
+l-values are objects that have a defined memory address (such as variables), and persist beyond a single expression.
+r-values are temporary values that do not have a defined memory address, and only have expression scope.
+R-values include both the results of expressions (e.g. 2 + 3) and literals.
+
+
+//references
+References generally act identically to the values they’re referencing. In this sense, a reference acts as an alias for the object being referenced.
+    int x = 5; // normal integer
+    int &y = x; // y is a reference to x
+    int &z = y; // z is also a reference to x
+
+Using the address-of operator on a reference returns the address of the value being referenced:
+    cout << &value; // prints 0012FF7C
+    cout << &ref; // prints 0012FF7C
+
+References must be initialized.no such thing as a null reference.
+    int value = 5;
+    int &ref = value; // valid reference, initialized to variable value
+    int &invalidRef; // invalid, needs to reference something
+
+references cannot be reassigned.
+    int value1 = 5;
+    int value2 = 6;
+ 
+    int &ref = value1; // okay, ref is now an alias for value1
+    ref = value2; // assigns 6 (the value of value2) to value1 -- does NOT change the reference!
+Instead of reassigning ref to reference variable value2, it instead assigns the value from value2 to value1 (which ref is a reference of)
+
+//using references to pass arrays to function
+// Note: You need to specify the array size in the function declaration
+    void printElements(int (&arr)[4])
+    {
+    ..........
+    }
+    int main()
+    {
+        printElements(arr);
+    }
+
+//Limitations of pass by reference
+Non-const references can only reference non-const l-values (e.g. non-const variables), 
+so a reference parameter cannot accept an argument that is a const l-value or an r-value (e.g. literals and the results of expressions).
+
+
+//pass by const reference:
+const reference is a reference that does not allow the variable being referenced to be changed through the reference.
+Consequently, if we use a const reference as a parameter, we guarantee to the caller that the function will not change the argument!
+
+    void foo(const int &x) // x is a const reference
+    { x = 6;  // compile error: a const reference cannot have its value changed!}
+
+Const references can accept any type of argument, including l-values, const l-values, and r-values.
+
+//references to pointer
+    void foo(int *&ptr) // pass pointer by reference
+    {ptr = nullptr; // this changes the actual ptr argument passed in, not a copy}
+
+
+
+
+
+
+ALGORITHM:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. The _if suffix is used when you can call two forms of an algorithm that have the same number of parameters either by passing a value or by passing a function or function object. In this case,
+the version without the suffix is used for values, and the version with the _if suffix is used for functions and function objects. For example, find() searches for an element that has a certain
+value, whereas find_if() searches for an element that meets the criterion passed as a function, a function object, or a lambda.
+
+2. The _copy suffix is used as an indication that elements are not only manipulated but also copied into a destination range. For example, reverse() reverses the order of elements inside a range,
+whereas reverse_copy() copies the elements into another range in reverse order.
+
+
+Nonmodifying algos:
+--------------------------
+Nonmodifying algorithms change neither the order nor the value of the elements they process. These algorithms operate with input and forward iterators; therefore, you can call them for all standard containers.
+
+
+for_each() 			Performs an operation for each element
+count()				 Returns the number of elements
+count_if()				 Returns the number of elements that match a criterion
+min_element() 			Returns the element with the smallest value 
+max_element() 			Returns the element with the largest value
+minmax_element() 			Returns the elements with the smallest and largest value (since C++11)
+find() 				Searches for the first element with the passed value
+find_if()				 Searches for the first element that matches a criterion
+find_if_not() 			Searches for the first element that matches a criterion not (since C++11)
+search_n()			 Searches for the first n consecutive elements with certain properties
+search() 				Searches for the first occurrence of a subrange
+find_end() 			Searches for the last occurrence of a subrange
+find_first_of()			 Searches the first of several possible elements
+adjacent_find() 			Searches for two adjacent elements that are equal (by some criterion)
+equal() 				Returns whether two ranges are equal
+is_permutation() 			Returns whether two unordered ranges contain equal elements (since C++11)
+mismatch() 			Returns the first elements of two sequences that differ 
+lexicographical_compare() 		Returns whether a range is lexicographically less than another range 
+is_sorted() 			Returns whether the elements in a range are sorted (since C++11)
+is_sorted_until() 			Returns the first unsorted element in a range (since C++11)
+is_partitioned() 			Returns whether the elements in a range are partitioned in two groups according to a criterion (since C++11)
+partition_point() 			Returns the partitioning element for a range partitioned into elements fulfilling and elements not fulfilling a predicate (since C++11)
+is_heap() 				Returns whether the elements in a range are sorted as a heap (since C++11)
+is_heap_until() 			Returns the first element in a range not sorted as a heap (since C++11)
+all_of() 				Returns whether all elements match a criterion (since C++11) 
+any_of() 				Returns whether at least one element matches a criterion(since C++11)
+none_of() 			Returns whether none of the elements matches a criterion(since C++11)
+
+Search for 				String Function 		STL Algorithm
+First occurrence of one element 		find() 			find()
+Last occurrence of one element 		rfind() 			find() with reverse iterators
+First occurrence of a subrange 			find() 			search()
+Last occurrence of a subrange 			rfind() 			find_end()
+First occurrence of several elements 		find_first_of() 		find_first_of()
+Last occurrence of several elements 		find_last_of() 		find_first_of() with reverse iterators
+First occurrence of n consecutive					search_n()
+elements
+
+
+Modifying algos:
+---------------------
+Modifying algorithms change the value of elements. Such algorithms might modify the elements of a range directly or modify them while they are being copied into another range. If elements are
+copied into a destination range, the source range is not changed.
+
+
+for_each() 				Performs an operation for each element
+copy() 					Copies a range starting with the first element
+copy_if() 					Copies elements that match a criterion (since C++11)
+copy_n() 					Copies n elements (since C++11)
+copy_backward() 				Copies a range starting with the last element
+move() 					Moves elements of a range starting with the first element (since C++11)
+move_backward() 				Moves elements of a range starting with the last element (since C++11)
+transform() 				Modifies (and copies) elements; combines elements of two ranges
+merge() 					Merges two ranges
+swap_ranges() 				Swaps elements of two ranges
+fill() 					Replaces each element with a given value
+fill_n() 					Replaces n elements with a given value
+generate() 				Replaces each element with the result of an operation
+generate_n() 				Replaces n elements with the result of an operation
+iota() 					Replaces each element with a sequence of incremented values (since C++11)
+replace() 					Replaces elements that have a special value with another value
+replace_if() 				Replaces elements that match a criterion with another value
+replace_copy() 				Replaces elements that have a special value while copying the whole range
+replace_copy_if() 				Replaces elements that match a criterion while copying the whole range
+
+
+
+Using transform() is a bit slower because it returns and assigns the result instead of modifying the element directly. However, it is more flexible because it can also be used to modify elements while
+they are being copied into a different destination sequence.
+
+Strictly speaking, merge() does not necessarily have to be part of the list of modifying algorithms,because it requires that its input ranges be sorted. So, it should be part of the algorithms for sorted ranges. 
+In practice, however, merge() also merges the elements of unsorted ranges. Of course, then the result is unsorted. Nevertheless, to be safe, you should call merge() only for sorted ranges.
+
+Note that elements of associative and unordered containers are constant to ensure that you can’t compromise the sorted order of the elements due to an element modification. Therefore, you can’t
+use these containers as a destination for modifying algorithms.
+
+
+
+Removing algos:
+----------------------
+Removing algorithms are a special form of modifying algorithms. They can remove the elements either in a single range or while these elements are being copied into another range. As with modifying
+algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
+
+Note that these algorithms remove elements logically only by overwriting them with the following elements that were not removed. Thus, removing algorithms do not change the number of elements
+in the ranges on which they operate. Instead, they return the position of the new “end” of the range. It’s up to the caller to use that new end, such as to remove the elements physically.
+
+remove()				 Removes elements with a given value
+remove_if()			 Removes elements that match a given criterion
+remove_copy() 			Copies elements that do not match a given value
+remove_copy_if() 			Copies elements that do not match a given criterion
+unique() 				Removes adjacent duplicates (elements that are equal to their predecessor)
+unique_copy() 			Copies elements while removing adjacent duplicates
+
+
+Mutating algos:
+--------------------
+
+Mutating algorithms are algorithms that change the order of elements (and not their values) by assigning and swapping their values.
+
+As with modifying algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
+
+reverse_copy() 				Copies the elements while reversing their order
+rotate() 					Rotates the order of the elements 
+rotate_copy()				 Copies the elements while rotating their order
+next_permutation() 				Permutates the order of the elements
+prev_permutation() 				Permutates the order of the elements 
+shuffle() 					Brings the elements into a random order (since C++11)
+random_shuffle() 				Brings the elements into a random order
+partition() 				Changes the order of the elements so that elements that match a criterion are at the front
+stable_partition() 				Same as partition() but preserves the relative order of matching and nonmatching elements
+partition_copy() 				Copies the elements while changing the order so that elements that match a criterion are at the front
+
+
+
+
+Stacks:
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+In <stack>, the class stack is defined as follows:
+namespace std {
+template <typename T,
+typename Container = deque<T>>
+class stack;
+}
+The first template parameter is the type of the elements. The optional second template parameter defines the container that the stack uses internally for its elements. The default container is a deque.
+It was chosen because, unlike vectors, deques free their memory when elements are removed and don’t have to copy all elements on reallocation.
+
+std::stack<int> st; 						// integer stack
+std::stack<int,std::vector<int>> st; 				// integer stack that uses a vector
+
+
+• push() inserts an element into the stack.
+• top() returns the next element in the stack.
+• pop() removes an element from the stack.
+
+pop() removes the next element but does not return it, whereas top() returns the next element without removing it. Thus, you must always call both functions to process and remove the
+next element from the stack.
+
+the behavior of top() and pop() is undefined if the stack contains no elements. The member functions size() and empty() are provided to check whether the stack contains elements.
+
+
+
+
+Queue:
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+In <queue>, the class queue is defined as follows:
+namespace std {
+template <typename T,
+typename Container = deque<T>>
+class queue;
+}
+The first template parameter is the type of the elements. The optional second template parameter defines the container that the queue uses internally for its elements. The default container is a deque.
+
+std::queue<std::string> buffer; 				// string queue
+std::queue<std::string,std::list<std::string>> buffer;
+
+• push() inserts an element into the queue.
+• front() returns the next element in the queue (the element that was inserted first).
+• back() returns the last element in the queue (the element that was inserted last).
+• pop() removes an element from the queue.
+
+pop() removes the next element but does not return it, whereas front() and back() return the element without removing it.
+
+behavior of front(), back(), and pop() is undefined if the queue contains no elements. The member functions size() and empty() are provided to check whether the queue contains elements.
 
 String:
 -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -546,190 +1120,6 @@ For all function that convert strings to a numeric value, the following applies:
 
 For all functions that convert a numeric value to a string or wstring, val may be any of the following types: int, unsigned int, long, unsigned long, long long, unsigned long long, float, double, or long double.
 
-
-
-
-
-ALGORITHM:
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-1. The _if suffix is used when you can call two forms of an algorithm that have the same number of parameters either by passing a value or by passing a function or function object. In this case,
-the version without the suffix is used for values, and the version with the _if suffix is used for functions and function objects. For example, find() searches for an element that has a certain
-value, whereas find_if() searches for an element that meets the criterion passed as a function, a function object, or a lambda.
-
-2. The _copy suffix is used as an indication that elements are not only manipulated but also copied into a destination range. For example, reverse() reverses the order of elements inside a range,
-whereas reverse_copy() copies the elements into another range in reverse order.
-
-
-Nonmodifying algos:
---------------------------
-Nonmodifying algorithms change neither the order nor the value of the elements they process. These algorithms operate with input and forward iterators; therefore, you can call them for all standard containers.
-
-
-for_each() 			Performs an operation for each element
-count()				 Returns the number of elements
-count_if()				 Returns the number of elements that match a criterion
-min_element() 			Returns the element with the smallest value 
-max_element() 			Returns the element with the largest value
-minmax_element() 			Returns the elements with the smallest and largest value (since C++11)
-find() 				Searches for the first element with the passed value
-find_if()				 Searches for the first element that matches a criterion
-find_if_not() 			Searches for the first element that matches a criterion not (since C++11)
-search_n()			 Searches for the first n consecutive elements with certain properties
-search() 				Searches for the first occurrence of a subrange
-find_end() 			Searches for the last occurrence of a subrange
-find_first_of()			 Searches the first of several possible elements
-adjacent_find() 			Searches for two adjacent elements that are equal (by some criterion)
-equal() 				Returns whether two ranges are equal
-is_permutation() 			Returns whether two unordered ranges contain equal elements (since C++11)
-mismatch() 			Returns the first elements of two sequences that differ 
-lexicographical_compare() 		Returns whether a range is lexicographically less than another range 
-is_sorted() 			Returns whether the elements in a range are sorted (since C++11)
-is_sorted_until() 			Returns the first unsorted element in a range (since C++11)
-is_partitioned() 			Returns whether the elements in a range are partitioned in two groups according to a criterion (since C++11)
-partition_point() 			Returns the partitioning element for a range partitioned into elements fulfilling and elements not fulfilling a predicate (since C++11)
-is_heap() 				Returns whether the elements in a range are sorted as a heap (since C++11)
-is_heap_until() 			Returns the first element in a range not sorted as a heap (since C++11)
-all_of() 				Returns whether all elements match a criterion (since C++11) 
-any_of() 				Returns whether at least one element matches a criterion(since C++11)
-none_of() 			Returns whether none of the elements matches a criterion(since C++11)
-
-Search for 				String Function 		STL Algorithm
-First occurrence of one element 		find() 			find()
-Last occurrence of one element 		rfind() 			find() with reverse iterators
-First occurrence of a subrange 			find() 			search()
-Last occurrence of a subrange 			rfind() 			find_end()
-First occurrence of several elements 		find_first_of() 		find_first_of()
-Last occurrence of several elements 		find_last_of() 		find_first_of() with reverse iterators
-First occurrence of n consecutive					search_n()
-elements
-
-
-Modifying algos:
----------------------
-Modifying algorithms change the value of elements. Such algorithms might modify the elements of a range directly or modify them while they are being copied into another range. If elements are
-copied into a destination range, the source range is not changed.
-
-
-for_each() 				Performs an operation for each element
-copy() 					Copies a range starting with the first element
-copy_if() 					Copies elements that match a criterion (since C++11)
-copy_n() 					Copies n elements (since C++11)
-copy_backward() 				Copies a range starting with the last element
-move() 					Moves elements of a range starting with the first element (since C++11)
-move_backward() 				Moves elements of a range starting with the last element (since C++11)
-transform() 				Modifies (and copies) elements; combines elements of two ranges
-merge() 					Merges two ranges
-swap_ranges() 				Swaps elements of two ranges
-fill() 					Replaces each element with a given value
-fill_n() 					Replaces n elements with a given value
-generate() 				Replaces each element with the result of an operation
-generate_n() 				Replaces n elements with the result of an operation
-iota() 					Replaces each element with a sequence of incremented values (since C++11)
-replace() 					Replaces elements that have a special value with another value
-replace_if() 				Replaces elements that match a criterion with another value
-replace_copy() 				Replaces elements that have a special value while copying the whole range
-replace_copy_if() 				Replaces elements that match a criterion while copying the whole range
-
-
-
-Using transform() is a bit slower because it returns and assigns the result instead of modifying the element directly. However, it is more flexible because it can also be used to modify elements while
-they are being copied into a different destination sequence.
-
-Strictly speaking, merge() does not necessarily have to be part of the list of modifying algorithms,because it requires that its input ranges be sorted. So, it should be part of the algorithms for sorted ranges. 
-In practice, however, merge() also merges the elements of unsorted ranges. Of course, then the result is unsorted. Nevertheless, to be safe, you should call merge() only for sorted ranges.
-
-Note that elements of associative and unordered containers are constant to ensure that you can’t compromise the sorted order of the elements due to an element modification. Therefore, you can’t
-use these containers as a destination for modifying algorithms.
-
-
-
-Removing algos:
-----------------------
-Removing algorithms are a special form of modifying algorithms. They can remove the elements either in a single range or while these elements are being copied into another range. As with modifying
-algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
-
-Note that these algorithms remove elements logically only by overwriting them with the following elements that were not removed. Thus, removing algorithms do not change the number of elements
-in the ranges on which they operate. Instead, they return the position of the new “end” of the range. It’s up to the caller to use that new end, such as to remove the elements physically.
-
-remove()				 Removes elements with a given value
-remove_if()			 Removes elements that match a given criterion
-remove_copy() 			Copies elements that do not match a given value
-remove_copy_if() 			Copies elements that do not match a given criterion
-unique() 				Removes adjacent duplicates (elements that are equal to their predecessor)
-unique_copy() 			Copies elements while removing adjacent duplicates
-
-
-Mutating algos:
---------------------
-
-Mutating algorithms are algorithms that change the order of elements (and not their values) by assigning and swapping their values.
-
-As with modifying algorithms, you can’t use an associative or unordered container as a destination, because the elements of these containers are considered to be constant.
-
-reverse_copy() 				Copies the elements while reversing their order
-rotate() 					Rotates the order of the elements 
-rotate_copy()				 Copies the elements while rotating their order
-next_permutation() 				Permutates the order of the elements
-prev_permutation() 				Permutates the order of the elements 
-shuffle() 					Brings the elements into a random order (since C++11)
-random_shuffle() 				Brings the elements into a random order
-partition() 				Changes the order of the elements so that elements that match a criterion are at the front
-stable_partition() 				Same as partition() but preserves the relative order of matching and nonmatching elements
-partition_copy() 				Copies the elements while changing the order so that elements that match a criterion are at the front
-
-
-
-
-Stacks:
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-In <stack>, the class stack is defined as follows:
-namespace std {
-template <typename T,
-typename Container = deque<T>>
-class stack;
-}
-The first template parameter is the type of the elements. The optional second template parameter defines the container that the stack uses internally for its elements. The default container is a deque.
-It was chosen because, unlike vectors, deques free their memory when elements are removed and don’t have to copy all elements on reallocation.
-
-std::stack<int> st; 						// integer stack
-std::stack<int,std::vector<int>> st; 				// integer stack that uses a vector
-
-
-• push() inserts an element into the stack.
-• top() returns the next element in the stack.
-• pop() removes an element from the stack.
-
-pop() removes the next element but does not return it, whereas top() returns the next element without removing it. Thus, you must always call both functions to process and remove the
-next element from the stack.
-
-the behavior of top() and pop() is undefined if the stack contains no elements. The member functions size() and empty() are provided to check whether the stack contains elements.
-
-
-
-
-Queue:
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-In <queue>, the class queue is defined as follows:
-namespace std {
-template <typename T,
-typename Container = deque<T>>
-class queue;
-}
-The first template parameter is the type of the elements. The optional second template parameter defines the container that the queue uses internally for its elements. The default container is a deque.
-
-std::queue<std::string> buffer; 				// string queue
-std::queue<std::string,std::list<std::string>> buffer;
-
-• push() inserts an element into the queue.
-• front() returns the next element in the queue (the element that was inserted first).
-• back() returns the last element in the queue (the element that was inserted last).
-• pop() removes an element from the queue.
-
-pop() removes the next element but does not return it, whereas front() and back() return the element without removing it.
-
-behavior of front(), back(), and pop() is undefined if the queue contains no elements. The member functions size() and empty() are provided to check whether the queue contains elements.
 
 
 Streams:
@@ -1186,6 +1576,8 @@ The string streams is based on ostringstream (subclass of ostream), istringstrea
 typedef basic_istringstream<char> istringstream;
 typedef basic_ostringstream<char> ostringstream;
 Stream input can be used to validate input data; stream output can be used to format the output.
+
+
 ostringstream
 explicit ostringstream (ios::openmode mode = ios::out);  // default with empty string
 explicit ostringstream (const string & buf, 
@@ -1205,6 +1597,8 @@ sout << "banana" << endl;
 // Get contents
 cout << sout.str() << endl;
 The ostringstream is responsible for dynamic memory allocation and management.
+
+
 istringstream
 explicit istringstream (ios::openmode mode = ios::in);  // default with empty string
 explicit istringstream (const string & buf,
@@ -1221,6 +1615,40 @@ sin >> i >> d >> s;
 cout << i << "," << d << "," << s << endl;
 
 
+
+
+
+
+FastIO:
+
+void fastscan(long long int &x){
+        bool neg=false;
+        register int c;
+        x =0;
+        c=getchar();
+        if(c=='-'){
+            neg = true;
+            c=getchar();
+        }
+        for(;(c>47 && c<58);c=getchar()) x = (x<<1) + (x<<3) +c -48;
+        if(neg) x *=-1;
+}
+
+void fastRead_string(char *str)
+{
+    register char c=0;
+    register int i = 0;
+    while (c < 33)
+        c = getchar_unlocked();
+    while (c > 65)
+    {
+        str[i] = c;
+        c = getchar_unlocked();
+        i = i + 1;
+    }
+
+    str[i] = '\0';
+}
 
 
 DOBUTs:
